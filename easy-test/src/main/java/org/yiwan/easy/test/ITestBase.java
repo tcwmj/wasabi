@@ -52,8 +52,6 @@ public interface ITestBase {
 
     SoftAssertions getSoftAssertions();
 
-    Charset getDefaultDownloadFileCharset();
-
     void setDownloadFile(String downloadFile);
 
     void setDefaultDownloadFileName(String defaultDownloadFileName);
@@ -69,8 +67,6 @@ public interface ITestBase {
     void setTestDataManager(ITestDataManager testDataManager);
 
     void setViewManager(IViewManager viewManager);
-
-    void setDefaultDownloadFileCharset();
 
     /**
      * log the content into the report
@@ -135,4 +131,16 @@ public interface ITestBase {
     void setUpTest(boolean proxied) throws Exception;
 
     void tearDownTest() throws Exception;
+
+    Charset getDownloadFileCharset();
+
+    void setDownloadFileCharset(Charset downloadFileCharset);
+
+    FileFormat getDownloadFileFormat();
+
+    void setDownloadFileFormat(FileFormat downloadFileFormat);
+
+    void prepareToDownloadTextFile();
+
+    void prepareToDownloadBinaryFile();
 }

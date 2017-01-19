@@ -66,7 +66,8 @@ public abstract class AbstractTest implements ITestBase {
     private TestEnvironment testEnvironment;
     private TimestampWriter timestampWriter;
     private SoftAssertions softAssertions;
-    private Charset defaultDownloadFileCharset;
+    private Charset downloadFileCharset;
+    private FileFormat downloadFileFormat;
 
     @Override
     public String getDownloadFile() {
@@ -164,11 +165,6 @@ public abstract class AbstractTest implements ITestBase {
     }
 
     @Override
-    public Charset getDefaultDownloadFileCharset() {
-        return defaultDownloadFileCharset;
-    }
-
-    @Override
     public void setDownloadFile(String downloadFile) {
         this.downloadFile = downloadFile;
     }
@@ -206,11 +202,6 @@ public abstract class AbstractTest implements ITestBase {
     @Override
     public void setViewManager(IViewManager viewManager) {
         this.viewManager = viewManager;
-    }
-
-    @Override
-    public void setDefaultDownloadFileCharset(Charset defaultDownloadFileCharset) {
-        this.defaultDownloadFileCharset = defaultDownloadFileCharset;
     }
 
     @Override
@@ -358,7 +349,8 @@ public abstract class AbstractTest implements ITestBase {
         prepareToDownload = false;
         recycleTestEnvironment = false;
         proxyWrapper = null;
-        defaultDownloadFileCharset = StandardCharsets.UTF_8;
+        downloadFileCharset = StandardCharsets.UTF_8;
+        downloadFileFormat = FileFormat.DEFAULT;
 
         //if no available test environment, no need create webdriver and test data
         testEnvironment = TestCaseManager.pollTestEnvironment();
@@ -436,5 +428,37 @@ public abstract class AbstractTest implements ITestBase {
     @AfterClass
     protected void afterClass(ITestContext testContext, ITestResult testResult) {
 //        do something
+    }
+
+    @Override
+    public Charset getDownloadFileCharset() {
+        return downloadFileCharset;
+    }
+
+    @Override
+    public void setDownloadFileCharset(Charset downloadFileCharset) {
+        this.downloadFileCharset = downloadFileCharset;
+    }
+
+    @Override
+    public FileFormat getDownloadFileFormat() {
+        return downloadFileFormat;
+    }
+
+    @Override
+    public void setDownloadFileFormat(FileFormat downloadFileFormat) {
+        this.downloadFileFormat = downloadFileFormat;
+    }
+
+    @Override
+    public void prepareToDownloadTextFile() {
+        prepareToDownload = true;
+        downloadFileFormat = FileFormat.TEXT;
+    }
+
+    @Override
+    public void prepareToDownloadBinaryFile() {
+        prepareToDownload = true;
+        downloadFileFormat = FileFormat.BINARY;
     }
 }
