@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.*;
 import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -40,7 +40,7 @@ public class HTMLReporter extends CustomizedReporter {
             return;
         }
         // builder.setEncoding(Property.SOURCE_CODE_ENCODING);
-        builder.addSourceTree(new File(PropHelper.SOURCE_CODE_PATH));
+        builder.addSourceTree(new File(PropertiesHelper.SOURCE_CODE_PATH));
         startHtml(m_out);
         generateSuiteSummaryReport(suites);
         testIds.clear();

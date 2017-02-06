@@ -1,20 +1,11 @@
 package org.yiwan.easy.test;
 
-import net.lightbody.bmp.client.ClientUtil;
-import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.SoftAssertions;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Proxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
 import org.yiwan.easy.bmproxy.ProxyWrapper;
 import org.yiwan.easy.bmproxy.TimestampWriter;
 import org.yiwan.easy.bmproxy.observer.FileDownloadObserver;
@@ -27,11 +18,10 @@ import org.yiwan.easy.model.ApplicationServer;
 import org.yiwan.easy.model.TestCapabilities;
 import org.yiwan.easy.model.TestEnvironment;
 import org.yiwan.easy.util.Helper;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -75,8 +65,18 @@ public abstract class AbstractTest implements ITestBase {
     }
 
     @Override
+    public void setDownloadFile(String downloadFile) {
+        this.downloadFile = downloadFile;
+    }
+
+    @Override
     public String getDefaultDownloadFileName() {
         return defaultDownloadFileName;
+    }
+
+    @Override
+    public void setDefaultDownloadFileName(String defaultDownloadFileName) {
+        this.defaultDownloadFileName = defaultDownloadFileName;
     }
 
     @Override
@@ -90,8 +90,18 @@ public abstract class AbstractTest implements ITestBase {
     }
 
     @Override
+    public void setSuiteName(String suiteName) {
+        this.suiteName = suiteName;
+    }
+
+    @Override
     public String getTestName() {
         return testName;
+    }
+
+    @Override
+    public void setTestName(String testName) {
+        this.testName = testName;
     }
 
     @Override
@@ -100,8 +110,18 @@ public abstract class AbstractTest implements ITestBase {
     }
 
     @Override
+    public void setScenarioId(String scenarioId) {
+        this.scenarioId = scenarioId;
+    }
+
+    @Override
     public String getFeatureId() {
         return featureId;
+    }
+
+    @Override
+    public void setFeatureId(String featureId) {
+        this.featureId = featureId;
     }
 
     @Override
@@ -118,8 +138,18 @@ public abstract class AbstractTest implements ITestBase {
     }
 
     @Override
+    public void setSkipTest(boolean skipTest) {
+        this.skipTest = skipTest;
+    }
+
+    @Override
     public boolean isPrepareToDownload() {
         return prepareToDownload;
+    }
+
+    @Override
+    public void setPrepareToDownload(boolean prepareToDownload) {
+        this.prepareToDownload = prepareToDownload;
     }
 
     @Override
@@ -127,8 +157,14 @@ public abstract class AbstractTest implements ITestBase {
         return testMap;
     }
 
+    @Override
     public IDriverWrapper getDriverWrapper() {
         return driverWrapper;
+    }
+
+    @Override
+    public void setDriverWrapper(IDriverWrapper driverWrapper) {
+        this.driverWrapper = driverWrapper;
     }
 
     @Override
@@ -136,8 +172,19 @@ public abstract class AbstractTest implements ITestBase {
         return testDataManager;
     }
 
+    @Override
+    public void setTestDataManager(ITestDataManager testDataManager) {
+        this.testDataManager = testDataManager;
+    }
+
+    @Override
     public IViewManager getViewManager() {
         return viewManager;
+    }
+
+    @Override
+    public void setViewManager(IViewManager viewManager) {
+        this.viewManager = viewManager;
     }
 
     @Override
@@ -145,8 +192,14 @@ public abstract class AbstractTest implements ITestBase {
         return proxyWrapper;
     }
 
+    @Override
     public TestCapabilities getTestCapabilities() {
         return testCapabilities;
+    }
+
+    @Override
+    public void setTestCapabilities(TestCapabilities testCapabilities) {
+        this.testCapabilities = testCapabilities;
     }
 
     @Override
@@ -162,46 +215,6 @@ public abstract class AbstractTest implements ITestBase {
     @Override
     public SoftAssertions getSoftAssertions() {
         return softAssertions;
-    }
-
-    @Override
-    public void setDownloadFile(String downloadFile) {
-        this.downloadFile = downloadFile;
-    }
-
-    @Override
-    public void setDefaultDownloadFileName(String defaultDownloadFileName) {
-        this.defaultDownloadFileName = defaultDownloadFileName;
-    }
-
-    @Override
-    public void setScenarioId(String scenarioId) {
-        this.scenarioId = scenarioId;
-    }
-
-    @Override
-    public void setFeatureId(String featureId) {
-        this.featureId = featureId;
-    }
-
-    @Override
-    public void setSkipTest(boolean skipTest) {
-        this.skipTest = skipTest;
-    }
-
-    @Override
-    public void setPrepareToDownload(boolean prepareToDownload) {
-        this.prepareToDownload = prepareToDownload;
-    }
-
-    @Override
-    public void setTestDataManager(ITestDataManager testDataManager) {
-        this.testDataManager = testDataManager;
-    }
-
-    @Override
-    public void setViewManager(IViewManager viewManager) {
-        this.viewManager = viewManager;
     }
 
     @Override
@@ -233,27 +246,6 @@ public abstract class AbstractTest implements ITestBase {
     }
 
     @Override
-    public void embedScreenshot() throws IOException {
-//        if (driverWrapper.alert().isPresent()) {
-//            logger.warn("dismiss unexpected alert {} before taking screenshot", driverWrapper.alert().getText());
-//            driverWrapper.alert().dismiss();
-//        }
-        String saveTo = Helper.randomize() + ".png";
-        File screenshot = driverWrapper.getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(screenshot, new File(PropHelper.RESULT_FOLDER + PropHelper.SCREENSHOT_FOLDER + saveTo));
-        String refPath = "../../" + PropHelper.SCREENSHOT_FOLDER + saveTo;
-        report(Helper.getTestReportStyle(refPath, "<img src=\"" + refPath + "\" width=\"400\" height=\"300\"/>"));
-    }
-
-    @Override
-    public void embedTestLog() throws IOException {
-    }
-
-    @Override
-    public void embedTestData(Object o) throws Exception {
-    }
-
-    @Override
     public void startTransaction(String transactionName) {
         this.transactionName = transactionName;
         if (subject != null) {
@@ -270,9 +262,9 @@ public abstract class AbstractTest implements ITestBase {
 
     @Override
     public void createProxyWrapper() {
-        if (PropHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD || PropHelper.ENABLE_TRANSACTION_SCREENSHOT_CAPTURE || PropHelper.ENABLE_HTTP_ARCHIVE || PropHelper.ENABLE_FILE_DOWNLOAD) {
+        if (PropertiesHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD || PropertiesHelper.ENABLE_TRANSACTION_SCREENSHOT_CAPTURE || PropertiesHelper.ENABLE_HTTP_ARCHIVE || PropertiesHelper.ENABLE_FILE_DOWNLOAD) {
             proxyWrapper = new ProxyWrapper();
-            if (PropHelper.ENABLE_WHITELIST) {
+            if (PropertiesHelper.ENABLE_WHITELIST) {
                 // This are the patterns of our sites, in real life there are more...
                 List<String> allowUrlPatterns = new ArrayList<>();
                 for (ApplicationServer applicationServer : testEnvironment.getApplicationServers()) {
@@ -285,40 +277,19 @@ public abstract class AbstractTest implements ITestBase {
             }
             proxyWrapper.start();
             subject = new TransactionSubject();
-            if (PropHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD) {
+            if (PropertiesHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD) {
                 subject.attach(new TimestampObserver(this));
             }
-            if (PropHelper.ENABLE_TRANSACTION_SCREENSHOT_CAPTURE) {
+            if (PropertiesHelper.ENABLE_TRANSACTION_SCREENSHOT_CAPTURE) {
                 subject.attach(new ScreenshotObserver(this));
             }
-            if (PropHelper.ENABLE_HTTP_ARCHIVE) {
+            if (PropertiesHelper.ENABLE_HTTP_ARCHIVE) {
                 subject.attach(new HttpArchiveObserver(this));
             }
-            if (PropHelper.ENABLE_FILE_DOWNLOAD) {
+            if (PropertiesHelper.ENABLE_FILE_DOWNLOAD) {
                 subject.attach(new FileDownloadObserver(this));
             }
         }
-    }
-
-    @Override
-    public void createWebDriverWrapper() throws MalformedURLException {
-        Proxy realProxy;
-        if (proxyWrapper != null) {
-            if (PropHelper.ENABLE_PENETRATION_TEST) {
-                proxyWrapper.setChainedProxy(PropHelper.ZAP_SERVER_HOST, PropHelper.ZAP_SERVER_PORT);
-            }
-            realProxy = ClientUtil.createSeleniumProxy(proxyWrapper.getProxy());
-        } else {
-            if (PropHelper.ENABLE_PENETRATION_TEST) {
-                String proxyStr = String.format("%s:%d", PropHelper.ZAP_SERVER_HOST, PropHelper.ZAP_SERVER_PORT);
-                realProxy = new Proxy().setProxyType(Proxy.ProxyType.MANUAL)
-                        .setHttpProxy(proxyStr)
-                        .setSslProxy(proxyStr);
-            } else {
-                realProxy = new Proxy().setProxyType(Proxy.ProxyType.DIRECT);
-            }
-        }
-        driverWrapper = new WebDriverWrapperFactory(testCapabilities, realProxy).create();
     }
 
     /**
@@ -334,13 +305,13 @@ public abstract class AbstractTest implements ITestBase {
     /**
      * feature id and scenario id should be set before invoking setUpTest
      *
-     * @param proxied enable proxy by test scenario or not
+     * @param isProxyEnabled enable proxy by test scenario or not
      * @throws Exception
      */
     @Override
-    public void setUpTest(boolean proxied) throws Exception {
-        MDC.put(PropHelper.DISCRIMINATOR_KEY, getSuiteTestSeparator() + scenarioId + ".log");
-        (new File(PropHelper.TARGET_SCENARIO_DATA_FOLDER)).mkdirs();
+    public void setUpTest(boolean isProxyEnabled) throws Exception {
+        MDC.put(PropertiesHelper.DISCRIMINATOR_KEY, getSuiteTestSeparator() + scenarioId + ".log");
+        (new File(PropertiesHelper.TARGET_SCENARIO_DATA_FOLDER)).mkdirs();
         logger.info("setup test before starting feature id {}, scenario id {}", featureId, scenarioId);
 
         softAssertions = new SoftAssertions();
@@ -356,24 +327,20 @@ public abstract class AbstractTest implements ITestBase {
         testEnvironment = TestCaseManager.pollTestEnvironment();
         if (testEnvironment != null) {
             recycleTestEnvironment = true;//must be after method setTestEnvironment
-            if (proxied && (PropHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD ||
-                    PropHelper.ENABLE_TRANSACTION_SCREENSHOT_CAPTURE ||
-                    PropHelper.ENABLE_HTTP_ARCHIVE ||
-                    PropHelper.ENABLE_FILE_DOWNLOAD)) {
-                createProxyWrapper();//create proxyWrapper must before creating webdriverWrapper
+            if (isProxyEnabled && (PropertiesHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD ||
+                    PropertiesHelper.ENABLE_TRANSACTION_SCREENSHOT_CAPTURE ||
+                    PropertiesHelper.ENABLE_HTTP_ARCHIVE ||
+                    PropertiesHelper.ENABLE_FILE_DOWNLOAD)) {
+                createProxyWrapper();//create proxyWrapper must before creating driver Wrapper
             }
-            createWebDriverWrapper();//create webdriverWrapper
-            driverWrapper.deleteAllCookies();
-            if (PropHelper.MAXIMIZE_BROWSER) {
-                driverWrapper.maximize();
-            }
-            if (PropHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD) {
+
+            if (PropertiesHelper.ENABLE_TRANSACTION_TIMESTAMP_RECORD) {
                 timestampWriter = new TimestampWriter();
                 timestampWriter.write(this);
             }
 
             report(String.format("taken test environment<br/>%s", testEnvironment));
-            report(Helper.getTestReportStyle("../../" + PropHelper.LOG_FOLDER + MDC.get(PropHelper.DISCRIMINATOR_KEY), "open test execution log"));
+            report(Helper.getTestReportStyle("../../" + PropertiesHelper.LOG_FOLDER + MDC.get(PropertiesHelper.DISCRIMINATOR_KEY), "open test execution log"));
         } else {
             throw new RuntimeException("couldn't get a valid test environment");
         }
@@ -389,45 +356,7 @@ public abstract class AbstractTest implements ITestBase {
         if (proxyWrapper != null) {
             proxyWrapper.stop();
         }
-        if (driverWrapper != null) {
-            try {
-                closeAlerts();
-                driverWrapper.quit();
-            } catch (Exception ignored) {
-                logger.error(ignored.getMessage(), ignored);
-            }
-        }
         softAssertions.assertAll();
-    }
-
-    private void closeAlerts() {
-        int acceptAlerts = 0;
-        while (driverWrapper.alert().isPresent() && acceptAlerts++ < 10) {
-            driverWrapper.alert().accept();
-        }
-    }
-
-    @BeforeClass
-    @Parameters({"os", "os_version", "browser", "browser_version", "resolution"})
-    protected void beforeClass(ITestContext testContext, @Optional String os, @Optional String osVersion, @Optional String browser, @Optional String browserVersion, @Optional String resolution) {
-        TestCaseManager.setTestCase(this);
-
-        suiteName = testContext.getCurrentXmlTest().getSuite().getName();
-        testName = testContext.getCurrentXmlTest().getName();
-
-        testCapabilities = new TestCapabilities();
-        testCapabilities.setOs(os);
-        testCapabilities.setOsVersion(osVersion);
-        testCapabilities.setBrowser(browser);
-        testCapabilities.setBrowserVersion(browserVersion);
-        testCapabilities.setResolution(resolution);
-
-        report(String.format("test capability<br/>%s", testCapabilities));
-    }
-
-    @AfterClass
-    protected void afterClass(ITestContext testContext, ITestResult testResult) {
-//        do something
     }
 
     @Override
@@ -448,6 +377,11 @@ public abstract class AbstractTest implements ITestBase {
     @Override
     public void setDownloadFileFormat(FileFormat downloadFileFormat) {
         this.downloadFileFormat = downloadFileFormat;
+    }
+
+    @Override
+    public void prepareToDownloadFile() {
+        prepareToDownload = true;
     }
 
     @Override

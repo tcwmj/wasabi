@@ -1,42 +1,40 @@
 package org.yiwan.appium.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.model.TestCapabilities;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public abstract class AppiumCapabilities extends TestCapabilities {
+public abstract class AppiumTestCapabilities extends TestCapabilities {
     @JsonIgnore
-    private static final Logger logger = LoggerFactory.getLogger(AppiumCapabilities.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppiumTestCapabilities.class);
 
-    private String automationName = PropHelper.getProperty("appium.automationName");
-    private String platformName = PropHelper.getProperty("appium.platformName");
-    private String platformVersion = PropHelper.getProperty("appium.platformVersion");
-    private String deviceName = PropHelper.getProperty("appium.deviceName");
-    private String app = PropHelper.getProperty("appium.app");
+    private String automationName = PropertiesHelper.getProperty("appium.automationName");
+    private String platformName = PropertiesHelper.getProperty("appium.platformName");
+    private String platformVersion = PropertiesHelper.getProperty("appium.platformVersion");
+    private String deviceName = PropertiesHelper.getProperty("appium.deviceName");
+    private String app = PropertiesHelper.getProperty("appium.app");
     private String browserName;
-    private Integer newCommandTimeout = Integer.parseInt(PropHelper.getProperty("appium.newCommandTimeout"));
+    private Integer newCommandTimeout = Integer.parseInt(PropertiesHelper.getProperty("appium.newCommandTimeout"));
     private String language;
     private String locale;
     private String udid;
     private String orientation;
     private Boolean autoWebview;
-    private Boolean noReset = Boolean.parseBoolean(PropHelper.getProperty("appium.noReset"));
-    private Boolean fullReset = Boolean.parseBoolean(PropHelper.getProperty("appium.fullReset"));
+    private Boolean noReset = Boolean.parseBoolean(PropertiesHelper.getProperty("appium.noReset"));
+    private Boolean fullReset = Boolean.parseBoolean(PropertiesHelper.getProperty("appium.fullReset"));
 
-    public AppiumCapabilities() {
+    public AppiumTestCapabilities() {
         super();
     }
 
-    public AppiumCapabilities(String automationName, String platformName, String platformVersion, String deviceName, String app, String browserName, Integer newCommandTimeout, String language, String locale, String udid, String orientation, Boolean autoWebview, Boolean noReset, Boolean fullReset) {
+    public AppiumTestCapabilities(String automationName, String platformName, String platformVersion, String deviceName, String app, String browserName, Integer newCommandTimeout, String language, String locale, String udid, String orientation, Boolean autoWebview, Boolean noReset, Boolean fullReset) {
         if (automationName != null) {
             this.automationName = automationName;
         }
@@ -191,16 +189,6 @@ public abstract class AppiumCapabilities extends TestCapabilities {
 
     public void setFullReset(Boolean fullReset) {
         this.fullReset = fullReset;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return (new ObjectMapper()).writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getMessage(), e);
-            return "";
-        }
     }
 
     public DesiredCapabilities toDesiredCapabilities() {

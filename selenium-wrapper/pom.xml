@@ -154,6 +154,64 @@
                     <reportsDirectory>${project.build.directory}/result/unit-test-reports</reportsDirectory>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb21-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!--<strict>false</strict>-->
+                            <extension>true</extension>
+                            <args>
+                                <arg>-Xinject-code</arg>
+                                <!--<arg>-Xsimplify</arg>-->
+                            </args>
+                            <plugins>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-basics</artifactId>
+                                    <version>${jaxb2.basics.version}</version>
+                                </plugin>
+                            </plugins>
+                            <!--<schemaDirectory>src/main/resources</schemaDirectory>-->
+                            <schemaIncludes>
+                                <include>locatorBean.xsd</include>
+                            </schemaIncludes>
+                            <!--<bindingDirectory>src/main/resources</bindingDirectory>-->
+                            <bindingIncludes>
+                                <include>locatorBeanBindings.xjb</include>
+                            </bindingIncludes>
+                            <generatePackage>org.yiwan.selenium.locator</generatePackage>
+                            <generateDirectory>${generatedSourcesDirectory}</generateDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generatedSourcesDirectory}</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

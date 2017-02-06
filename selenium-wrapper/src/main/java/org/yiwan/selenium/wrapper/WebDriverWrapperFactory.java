@@ -1,7 +1,6 @@
 package org.yiwan.selenium.wrapper;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.model.TestCapabilities;
 import org.yiwan.easy.util.IAction;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
+import org.yiwan.selenium.model.WebTestCapabilities;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -33,33 +33,30 @@ import java.util.Arrays;
  */
 public class WebDriverWrapperFactory {
     private final static Logger logger = LoggerFactory.getLogger(WebDriverWrapperFactory.class);
-
-    private final String os;
-    private final String os_version;
-    private final String browser;
-    private final String browser_version;
-    private final String resolution;
+    private URL url;
+    private TestCapabilities testCapabilities;
     private final Proxy seleniumProxy;
 
-    public WebDriverWrapperFactory(TestCapabilities testCapabilities) {
+    public WebDriverWrapperFactory(TestCapabilities testCapabilities) throws MalformedURLException {
         this(testCapabilities, null);
     }
 
-    public WebDriverWrapperFactory(TestCapabilities testCapabilities, Proxy seleniumProxy) {
-        this.os = (testCapabilities == null || testCapabilities.getOs() == null) ? System.getProperty("os") : testCapabilities.getOs();
-        this.os_version = (testCapabilities == null || testCapabilities.getOsVersion() == null) ? System.getProperty("os.version") : testCapabilities.getOsVersion();
-        this.browser = (testCapabilities == null || testCapabilities.getBrowser() == null) ? System.getProperty("browser", PropHelper.DEFAULT_BROWSER) : testCapabilities.getBrowser();
-        this.browser_version = (testCapabilities == null || testCapabilities.getBrowserVersion() == null) ? System.getProperty("browser.version") : testCapabilities.getBrowserVersion();
-        this.resolution = (testCapabilities == null || testCapabilities.getResolution() == null) ? System.getProperty("resolution") : testCapabilities.getResolution();
+    public WebDriverWrapperFactory(TestCapabilities testCapabilities, Proxy seleniumProxy) throws MalformedURLException {
+        this(new URL(PropertiesHelper.REMOTE_ADDRESS), testCapabilities, seleniumProxy);
+    }
+
+    public WebDriverWrapperFactory(URL url, TestCapabilities testCapabilities, Proxy seleniumProxy) {
+        this.url = url;
+        this.testCapabilities = testCapabilities;
         this.seleniumProxy = seleniumProxy;
     }
 
     public IWebDriverWrapper create() throws MalformedURLException {
         IWebDriverWrapper webDriverWrapper = null;
-        if (PropHelper.DUMMY_TEST) {
+        if (PropertiesHelper.DUMMY_TEST) {
             webDriverWrapper = new DummyWebDriverWrapper();
         } else {
-            if (PropHelper.REMOTE) {
+            if (PropertiesHelper.REMOTE) {
                 logger.info("choosing remote test mode");
                 webDriverWrapper = createRemoteWebDriverWrapper();
             } else {
@@ -67,14 +64,14 @@ public class WebDriverWrapperFactory {
                 webDriverWrapper = createWebDriverWrapper();
             }
 //        use explicit wait to replace implicitly wait
-//        webDriver.manage().timeouts().implicitlyWait(PropHelper.TIMEOUT_INTERVAL, TimeUnit.SECONDS);
+//        webDriver.manage().timeouts().implicitlyWait(PropertiesHelper.TIMEOUT_INTERVAL, TimeUnit.SECONDS);
         }
         logger.info("created wrapper driver with following information\nSession ID: {}\n{}", webDriverWrapper.getSessionId(), webDriverWrapper.getCapabilities());
         return webDriverWrapper;
     }
 
     private IWebDriverWrapper createWebDriverWrapper() {
-        switch (browser.toLowerCase()) {
+        switch (((WebTestCapabilities) testCapabilities).getBrowser().toLowerCase()) {
             case "chrome":
                 return createChromeDriverWrapper();
             case "ie":
@@ -91,18 +88,13 @@ public class WebDriverWrapperFactory {
     }
 
     private IWebDriverWrapper createRemoteWebDriverWrapper() throws MalformedURLException {
-        final DesiredCapabilities capabilities = new DesiredCapabilities();
-        if (os != null) {
-            logger.info("choosing platform " + os + (os_version == null ? "" : " " + os_version));
-            capabilities.setPlatform(Platform.fromString(os));
-            if (os_version != null) {
-                capabilities.setCapability("os_version", os_version);
-            }
-        }
+        final DesiredCapabilities capabilities = ((WebTestCapabilities) testCapabilities).toDesiredCapabilities();
+        logger.info("choosing platform " + ((WebTestCapabilities) testCapabilities).getOs());
+        logger.info("choosing platform version " + ((WebTestCapabilities) testCapabilities).getOsVersion());
         setRemoteBrowserCapabilities(capabilities);
 
 //        resolve easy grid issue of "org.openqa.easy.WebDriverException: Error forwarding the new session Error forwarding the request Read timed out"
-        final URL addressOfRemoteServer = new URL(PropHelper.REMOTE_ADDRESS);
+        final URL addressOfRemoteServer = new URL(PropertiesHelper.REMOTE_ADDRESS);
         final RemoteWebDriver[] rwd = new RemoteWebDriver[1];
         new WebDriverActionExecutor().execute(new IAction() {
             @Override
@@ -111,7 +103,7 @@ public class WebDriverWrapperFactory {
             }
         });
 
-//        HttpClient.Factory factory = new ApacheHttpClient.Factory(new HttpClientFactory(PropHelper.REMOTE_CONNECTION_TIMEOUT, PropHelper.REMOTE_SOCKET_TIMEOUT));
+//        HttpClient.Factory factory = new ApacheHttpClient.Factory(new HttpClientFactory(PropertiesHelper.REMOTE_CONNECTION_TIMEOUT, PropertiesHelper.REMOTE_SOCKET_TIMEOUT));
 //        HttpCommandExecutor executor = new HttpCommandExecutor(Collections.<String, CommandInfo>emptyMap(), addressOfRemoteServer, factory);
 //        RemoteWebDriver rwd = new RemoteWebDriver(executor, capabilities);
 
@@ -120,7 +112,7 @@ public class WebDriverWrapperFactory {
     }
 
     private IWebDriverWrapper wrapWebDriver(WebDriver webDriver) {
-        switch (browser.toLowerCase()) {
+        switch (((WebTestCapabilities) testCapabilities).getBrowser().toLowerCase()) {
             case "chrome":
                 return new ChromeDriverWrapper(webDriver);
             case "ie":
@@ -138,7 +130,7 @@ public class WebDriverWrapperFactory {
 
     private void setRemoteBrowserCapabilities(DesiredCapabilities capabilities) {
         setBrowserCapabilities(capabilities);
-        switch (browser.toLowerCase()) {
+        switch (((WebTestCapabilities) testCapabilities).getBrowser().toLowerCase()) {
             case "ie":
                 setInternetExplorerCapabilities(capabilities);
                 break;
@@ -174,7 +166,7 @@ public class WebDriverWrapperFactory {
     }
 
     private IWebDriverWrapper createPhantomJSDriverWrapper() {
-        System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropHelper.PHANTOMJS_PATH);
+        System.setProperty(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PropertiesHelper.PHANTOMJS_PATH);
         DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
         setBrowserCapabilities(capabilities);
         setPhantomJSCapabilities(capabilities);
@@ -182,7 +174,7 @@ public class WebDriverWrapperFactory {
     }
 
     private IWebDriverWrapper createChromeDriverWrapper() {
-        System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, PropHelper.CHROME_WEBDRIVER);
+        System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, PropertiesHelper.CHROME_WEBDRIVER);
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         setBrowserCapabilities(capabilities);
         setChromeCapabilities(capabilities);
@@ -190,7 +182,7 @@ public class WebDriverWrapperFactory {
     }
 
     private IWebDriverWrapper createInternetExplorerDriverWrapper() {
-        System.setProperty(InternetExplorerDriverService.IE_DRIVER_EXE_PROPERTY, PropHelper.IE_WEBDRIVER);
+        System.setProperty(InternetExplorerDriverService.IE_DRIVER_EXE_PROPERTY, PropertiesHelper.IE_WEBDRIVER);
         DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
         setBrowserCapabilities(capabilities);
         setInternetExplorerCapabilities(capabilities);
@@ -198,11 +190,11 @@ public class WebDriverWrapperFactory {
     }
 
     private IWebDriverWrapper createFirefoxDriverWrapper() {
-//        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_BINARY, PropHelper.FIREFOX_PATH);
-        System.setProperty("webdriver.gecko.driver", PropHelper.MARIONETTE_WEBDRIVER);
+//        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_BINARY, PropertiesHelper.FIREFOX_PATH);
+        System.setProperty("webdriver.gecko.driver", PropertiesHelper.MARIONETTE_WEBDRIVER);
         FirefoxBinary firefoxBinary;
-        if (PropHelper.FIREFOX_PATH != null && !PropHelper.FIREFOX_PATH.trim().isEmpty()) {
-            firefoxBinary = new FirefoxBinary(new File(PropHelper.FIREFOX_PATH));
+        if (PropertiesHelper.FIREFOX_PATH != null && !PropertiesHelper.FIREFOX_PATH.trim().isEmpty()) {
+            firefoxBinary = new FirefoxBinary(new File(PropertiesHelper.FIREFOX_PATH));
         } else {
             firefoxBinary = new FirefoxBinary();
         }
@@ -221,14 +213,12 @@ public class WebDriverWrapperFactory {
     }
 
     private void setBrowserCapabilities(DesiredCapabilities capabilities) {
-        logger.info("choosing browser " + browser + (browser_version == null ? "" : " " + browser_version));
-        if (browser_version != null) {
-            capabilities.setVersion(browser_version);
-        }
-        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, PropHelper.ACCEPT_SSL_CERTS);
-        capabilities.setCapability(CapabilityType.HAS_NATIVE_EVENTS, PropHelper.NATIVE_EVENTS);
-        if (PropHelper.UNEXPECTED_ALERT_BEHAVIOUR != null) {
-            capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.fromString(PropHelper.UNEXPECTED_ALERT_BEHAVIOUR));
+        logger.info("choosing browser " + ((WebTestCapabilities) testCapabilities).getBrowser());
+        logger.info("choosing browser " + ((WebTestCapabilities) testCapabilities).getBrowserVersion());
+        capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, PropertiesHelper.ACCEPT_SSL_CERTS);
+        capabilities.setCapability(CapabilityType.HAS_NATIVE_EVENTS, PropertiesHelper.NATIVE_EVENTS);
+        if (PropertiesHelper.UNEXPECTED_ALERT_BEHAVIOUR != null) {
+            capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.fromString(PropertiesHelper.UNEXPECTED_ALERT_BEHAVIOUR));
         }
         if (seleniumProxy != null) {
             capabilities.setCapability(CapabilityType.PROXY, seleniumProxy);
@@ -242,31 +232,31 @@ public class WebDriverWrapperFactory {
     private void setPhantomJSCapabilities(DesiredCapabilities capabilities) {
         capabilities.setBrowserName(BrowserType.PHANTOMJS);
         capabilities.setCapability("takesScreenshot", true);
-        String[] phantomjsCliArgs = StringUtils.split(PropHelper.PHANTOMJS_CLI_ARGS.trim());
-        if (PropHelper.PHANTOMJS_CLI_ARGS != null && phantomjsCliArgs.length > 0) {
+        String[] phantomjsCliArgs = StringUtils.split(PropertiesHelper.PHANTOMJS_CLI_ARGS.trim());
+        if (PropertiesHelper.PHANTOMJS_CLI_ARGS != null && phantomjsCliArgs.length > 0) {
             capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, Arrays.asList(phantomjsCliArgs));
         }
-        String[] phantomjsGhostdriverCliArgs = StringUtils.split(PropHelper.PHANTOMJS_GHOSTDRIVER_CLI_ARGS.trim());
-        if (PropHelper.PHANTOMJS_GHOSTDRIVER_CLI_ARGS != null && phantomjsGhostdriverCliArgs.length > 0) {
+        String[] phantomjsGhostdriverCliArgs = StringUtils.split(PropertiesHelper.PHANTOMJS_GHOSTDRIVER_CLI_ARGS.trim());
+        if (PropertiesHelper.PHANTOMJS_GHOSTDRIVER_CLI_ARGS != null && phantomjsGhostdriverCliArgs.length > 0) {
             capabilities.setCapability(PhantomJSDriverService.PHANTOMJS_GHOSTDRIVER_CLI_ARGS, Arrays.asList(phantomjsGhostdriverCliArgs));
         }
     }
 
     private void setInternetExplorerCapabilities(DesiredCapabilities capabilities) {
         capabilities.setBrowserName(BrowserType.IE);
-        capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, PropHelper.IGNORE_PROTECTED_MODE_SETTINGS);
-        if (PropHelper.INITIAL_BROWSER_URL != null) {
-            capabilities.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, PropHelper.INITIAL_BROWSER_URL);
+        capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, PropertiesHelper.IGNORE_PROTECTED_MODE_SETTINGS);
+        if (PropertiesHelper.INITIAL_BROWSER_URL != null) {
+            capabilities.setCapability(InternetExplorerDriver.INITIAL_BROWSER_URL, PropertiesHelper.INITIAL_BROWSER_URL);
         }
-        capabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, PropHelper.IGNORE_ZOOM_SETTING);
-        capabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, PropHelper.REQUIRE_WINDOW_FOCUS);
-        capabilities.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, PropHelper.ENABLE_PERSISTENT_HOVER);
+        capabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, PropertiesHelper.IGNORE_ZOOM_SETTING);
+        capabilities.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, PropertiesHelper.REQUIRE_WINDOW_FOCUS);
+        capabilities.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, PropertiesHelper.ENABLE_PERSISTENT_HOVER);
 //        capabilities.setCapability("disable-popup-blocking", true);
     }
 
     private void setFirefoxCapabilities(DesiredCapabilities capabilities) {
         capabilities.setBrowserName(BrowserType.FIREFOX);
-        if (browser_version != null && Integer.parseInt(browser_version) > 47) {
+        if (((WebTestCapabilities) testCapabilities).getBrowserVersion() != null && Integer.parseInt(((WebTestCapabilities) testCapabilities).getBrowserVersion()) > 47) {
             logger.info("choosing marionette mode");
             capabilities.setCapability("marionette", true);
         }
@@ -281,7 +271,7 @@ public class WebDriverWrapperFactory {
         profile.setPreference("browser.download.manager.showWhenStarting", false);
         profile.setPreference("browser.helperApps.alwaysAsk.force", false);
         profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain,text/xml,text/csv,image/jpeg,application/zip,application/vnd.ms-excel,application/pdf,application/xml");
-//        profile.setEnableNativeEvents(PropHelper.NATIVE_EVENTS);
+//        profile.setEnableNativeEvents(PropertiesHelper.NATIVE_EVENTS);
 //        profile.setPreference("browser.download.folderList", 2);
 //        profile.setPreference("browser.download.dir", "D:\\mydownloads\\");
 //        profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "application/octet-stream");

@@ -1,23 +1,25 @@
 package org.yiwan.appium.wrapper;
 
+import org.assertj.core.api.SoftAssertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.appium.locator.Locator;
 import org.yiwan.appium.locator.LocatorBean;
-import org.yiwan.appium.util.JaxbHelper;
-import org.yiwan.appium.util.PropHelper;
 import org.yiwan.appium.wrapper.IAppiumDriverWrapper.*;
-import org.yiwan.easy.test.AbstractView;
+import org.yiwan.easy.test.IView;
+import org.yiwan.easy.test.TestCaseManager;
+import org.yiwan.easy.util.JaxbHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public abstract class AbstractAppView extends AbstractView {
-    private final static LocatorBean LOCATOR_BEAN = JaxbHelper.unmarshal(ClassLoader.getSystemResourceAsStream(PropHelper.LOCATORS_FILE), ClassLoader.getSystemResourceAsStream(PropHelper.LOCATOR_SCHEMA), LocatorBean.class);
+public abstract class AppView implements IView {
+    private final static LocatorBean LOCATOR_BEAN = JaxbHelper.unmarshal(ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATORS_FILE), ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATOR_SCHEMA), LocatorBean.class);
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private IAppiumDriverWrapper appiumDriverWrapper;
 
-    public AbstractAppView(IAppiumDriverWrapper appiumDriverWrapper) {
+    public AppView(IAppiumDriverWrapper appiumDriverWrapper) {
         this.appiumDriverWrapper = appiumDriverWrapper;
     }
 
@@ -146,5 +148,9 @@ public abstract class AbstractAppView extends AbstractView {
 
     protected IFluentLocatorAssertion validateThat(String id, String... replacements) throws Exception {
         return validateThat(locator(id, replacements));
+    }
+
+    protected SoftAssertions getSoftAssertions() {
+        return TestCaseManager.getTestCase().getSoftAssertions();
     }
 }

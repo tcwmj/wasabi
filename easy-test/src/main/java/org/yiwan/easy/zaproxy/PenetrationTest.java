@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.yiwan.easy.test.TestCaseManager;
 import org.yiwan.easy.model.ApplicationServer;
 import org.yiwan.easy.model.TestEnvironment;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 import org.yiwan.easy.zaproxy.model.ScanInfo;
 import org.yiwan.easy.zaproxy.model.ScanResponse;
 import org.zaproxy.clientapi.core.*;
@@ -18,14 +18,14 @@ import java.util.List;
 
 public class PenetrationTest {
     private static final Logger logger = LoggerFactory.getLogger(PenetrationTest.class);
-    private static final String API_KEY = PropHelper.ZAP_API_KEY;
+    private static final String API_KEY = PropertiesHelper.ZAP_API_KEY;
     private static final String MEDIUM = "MEDIUM";
     private static final String HIGH = "HIGH";
     private static final String[] policyNames = {"directory-browsing", "cross-site-scripting", "sql-injection", "path-traversal", "remote-file-inclusion", "server-side-include", "script-active-scan-rules", "server-side-code-injection", "external-redirect", "crlf-injection"};
     private static ClientApi clientApi;
 
     static {
-        if (PropHelper.ENABLE_PENETRATION_TEST) {
+        if (PropertiesHelper.ENABLE_PENETRATION_TEST) {
             try {
                 doPreActions();
 //                add shutdown hook for crawling, scanning and get penetration test report in the end
@@ -42,7 +42,7 @@ public class PenetrationTest {
     }
 
     static void doPreActions() throws ClientApiException {
-        clientApi = new ClientApi(PropHelper.ZAP_SERVER_HOST, PropHelper.ZAP_SERVER_PORT);
+        clientApi = new ClientApi(PropertiesHelper.ZAP_SERVER_HOST, PropertiesHelper.ZAP_SERVER_PORT);
         ActiveScanner.config();
         Core.config();
         Spider.config();
@@ -89,7 +89,7 @@ public class PenetrationTest {
 
     static void generateReport() throws ClientApiException, IOException {
         byte[] bytes = Core.getHtmlReport();
-        File file = new File(PropHelper.PENETRATION_TEST_HTML_REPORT_FILE);
+        File file = new File(PropertiesHelper.PENETRATION_TEST_HTML_REPORT_FILE);
         FileUtils.writeByteArrayToFile(file, bytes);
     }
 

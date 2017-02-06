@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.appium.locator.Locator;
-import org.yiwan.appium.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import javax.annotation.Nullable;
 import java.net.URL;
@@ -36,7 +36,7 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
     public AppiumDriverWrapper(AppiumDriver driver) {
         this.driver = driver;
         this.js = (JavascriptExecutor) driver;
-        this.wait = new WebDriverWait(driver, PropHelper.TIMEOUT_INTERVAL, PropHelper.TIMEOUT_POLLING_INTERVAL)
+        this.wait = new WebDriverWait(driver, PropertiesHelper.TIMEOUT_INTERVAL, PropertiesHelper.TIMEOUT_POLLING_INTERVAL)
                 .ignoring(StaleElementReferenceException.class)
                 .ignoring(NoSuchElementException.class)
                 .ignoring(UnreachableBrowserException.class)

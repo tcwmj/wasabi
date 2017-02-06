@@ -13,7 +13,7 @@ import org.yiwan.easy.bmproxy.ProxyWrapper;
 import org.yiwan.easy.test.FileFormat;
 import org.yiwan.easy.test.ITestBase;
 import org.yiwan.easy.util.Helper;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class FileDownloadObserver extends SampleObserver {
             @Override
             public void filterResponse(HttpResponse response, HttpMessageContents contents, HttpMessageInfo messageInfo) {
                 if (testCase.isPrepareToDownload() && contents.getContentType() != null) {
-                    String filename = PropHelper.DOWNLOAD_FOLDER + Helper.randomize() + ".";
+                    String filename = PropertiesHelper.DOWNLOAD_FOLDER + Helper.randomize() + ".";
                     if (contents.getContentType().contains("application/vnd.ms-excel")) {
                         setDownloadFile(response, filename, "xls");
                         downloadFile(contents, FileFormat.BINARY);
@@ -96,7 +96,7 @@ public class FileDownloadObserver extends SampleObserver {
                     }
                 }
             }
-        }, PropHelper.MAXIMUM_RESPONSE_BUFFER_SIZE));
+        }, PropertiesHelper.MAXIMUM_RESPONSE_BUFFER_SIZE));
     }
 
     /**
@@ -157,7 +157,7 @@ public class FileDownloadObserver extends SampleObserver {
 
     private void completeDownload(HttpResponse response) {
 //        prevent to get download prompt
-        if (PropHelper.HTTP_STATUS_TO_204) {
+        if (PropertiesHelper.HTTP_STATUS_TO_204) {
             response.setStatus(HttpResponseStatus.NO_CONTENT);
         }
         if (testCase.isPrepareToDownload()) {

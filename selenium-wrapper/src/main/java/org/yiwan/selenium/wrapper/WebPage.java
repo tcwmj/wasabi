@@ -3,24 +3,24 @@ package org.yiwan.selenium.wrapper;
 import org.assertj.core.api.SoftAssertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yiwan.easy.locator.Locator;
-import org.yiwan.easy.locator.LocatorBean;
-import org.yiwan.easy.test.AbstractView;
+import org.yiwan.selenium.locator.Locator;
+import org.yiwan.selenium.locator.LocatorBean;
+import org.yiwan.easy.test.IView;
 import org.yiwan.easy.test.TestCaseManager;
 import org.yiwan.easy.util.JaxbHelper;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.util.Set;
 
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public class AbstractWebPage extends AbstractView {
-    private final static LocatorBean LOCATOR_BEAN = JaxbHelper.unmarshal(ClassLoader.getSystemResourceAsStream(PropHelper.LOCATORS_FILE), ClassLoader.getSystemResourceAsStream(PropHelper.LOCATOR_SCHEMA), LocatorBean.class);
+public class WebPage implements IView {
+    private final static LocatorBean LOCATOR_BEAN = JaxbHelper.unmarshal(ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATORS_FILE), ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATOR_SCHEMA), LocatorBean.class);
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private IWebDriverWrapper webDriverWrapper;
 
-    public AbstractWebPage(IWebDriverWrapper webDriverWrapper) {
+    public WebPage(IWebDriverWrapper webDriverWrapper) {
         this.webDriverWrapper = webDriverWrapper;
     }
 
@@ -109,11 +109,11 @@ public class AbstractWebPage extends AbstractView {
         return webDriverWrapper.executeAsyncScript(script, args);
     }
 
-    protected IActionsWrapper actions() {
+    protected IWebDriverWrapper.IActionsWrapper actions() {
         return webDriverWrapper.actions();
     }
 
-    protected IAlertWrapper alert() {
+    protected IWebDriverWrapper.IAlertWrapper alert() {
         return webDriverWrapper.alert();
     }
 
@@ -121,51 +121,51 @@ public class AbstractWebPage extends AbstractView {
         return LOCATOR_BEAN.locator(id, replacements);
     }
 
-    protected IWebElementWrapper element(Locator locator) {
+    protected IWebDriverWrapper.IWebElementWrapper element(Locator locator) {
         return webDriverWrapper.element(locator);
     }
 
-    protected IWebElementWrapper element(String id, String... replacements) throws Exception {
+    protected IWebDriverWrapper.IWebElementWrapper element(String id, String... replacements) throws Exception {
         return element(locator(id, replacements));
     }
 
-    protected IFluentWait waitThat() {
+    protected IWebDriverWrapper.IFluentWait waitThat() {
         return webDriverWrapper.waitThat();
     }
 
-    protected IFluentLocatorWait waitThat(Locator locator) {
+    protected IWebDriverWrapper.IFluentLocatorWait waitThat(Locator locator) {
         return webDriverWrapper.waitThat(locator);
     }
 
-    protected IFluentLocatorWait waitThat(String id, String... replacements) throws Exception {
+    protected IWebDriverWrapper.IFluentLocatorWait waitThat(String id, String... replacements) throws Exception {
         return waitThat(locator(id, replacements));
     }
 
-    protected IFluentAssertion assertThat() {
+    protected IWebDriverWrapper.IFluentAssertion assertThat() {
         return webDriverWrapper.assertThat();
     }
 
-    protected IFluentLocatorAssertion assertThat(Locator locator) {
+    protected IWebDriverWrapper.IFluentLocatorAssertion assertThat(Locator locator) {
         return webDriverWrapper.assertThat(locator);
     }
 
-    protected IFluentLocatorAssertion assertThat(IWebElementWrapper webElementWrapper) {
+    protected IWebDriverWrapper.IFluentLocatorAssertion assertThat(IWebDriverWrapper.IWebElementWrapper webElementWrapper) {
         return webDriverWrapper.assertThat(webElementWrapper);
     }
 
-    protected IFluentLocatorAssertion assertThat(String id, String... replacements) throws Exception {
+    protected IWebDriverWrapper.IFluentLocatorAssertion assertThat(String id, String... replacements) throws Exception {
         return assertThat(locator(id, replacements));
     }
 
-    protected IFluentAssertion validateThat() {
+    protected IWebDriverWrapper.IFluentAssertion validateThat() {
         return webDriverWrapper.validateThat();
     }
 
-    protected IFluentLocatorAssertion validateThat(Locator locator) {
+    protected IWebDriverWrapper.IFluentLocatorAssertion validateThat(Locator locator) {
         return webDriverWrapper.validateThat(locator);
     }
 
-    protected IFluentLocatorAssertion validateThat(String id, String... replacements) throws Exception {
+    protected IWebDriverWrapper.IFluentLocatorAssertion validateThat(String id, String... replacements) throws Exception {
         return validateThat(locator(id, replacements));
     }
 

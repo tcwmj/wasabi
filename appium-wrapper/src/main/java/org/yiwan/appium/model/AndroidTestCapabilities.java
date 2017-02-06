@@ -3,14 +3,14 @@ package org.yiwan.appium.model;
 
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.yiwan.appium.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public class AndroidCapabilities extends AppiumCapabilities {
-    private String appActivity = PropHelper.getProperty("android.appActivity");
-    private String appPackage = PropHelper.getProperty("android.appPackage");
+public class AndroidTestCapabilities extends AppiumTestCapabilities {
+    private String appActivity = PropertiesHelper.getProperty("android.appActivity");
+    private String appPackage = PropertiesHelper.getProperty("android.appPackage");
     private String appWaitActivity;
     private String appWaitPackage;
     private Integer deviceReadyTimeout;
@@ -44,11 +44,11 @@ public class AndroidCapabilities extends AppiumCapabilities {
     private Boolean recreateChromeDriverSessions;
     private Boolean nativeWebScreenshot;
 
-    public AndroidCapabilities() {
+    public AndroidTestCapabilities() {
         super();
     }
 
-    public AndroidCapabilities(String automationName, String platformName, String platformVersion, String deviceName, String app, String browserName, Integer newCommandTimeout, String language, String locale, String udid, String orientation, Boolean autoWebview, Boolean noReset, Boolean fullReset, String appActivity, String appPackage, String appWaitActivity, String appWaitPackage, Integer deviceReadyTimeout, String androidCoverage, Boolean enablePerformanceLogging, Integer androidDeviceReadyTimeout, Integer adbPort, String androidDeviceSocket, String avd, Long avdLaunchTimeout, Long avdReadyTimeout, String avdArgs, Boolean useKeystore, String keystorePath, String keystorePassword, String keyAlias, String keyPassword, String chromedriverExecutable, Long autoWebviewTimeout, String intentAction, String intentCategory, String intentFlags, String optionalIntentArguments, Boolean dontStopAppOnReset, Boolean unicodeKeyboard, Boolean resetKeyboard, Boolean noSign, Boolean ignoreUnimportantViews, Boolean disableAndroidWatchers, String chromeOptions, Boolean recreateChromeDriverSessions, Boolean nativeWebScreenshot) {
+    public AndroidTestCapabilities(String automationName, String platformName, String platformVersion, String deviceName, String app, String browserName, Integer newCommandTimeout, String language, String locale, String udid, String orientation, Boolean autoWebview, Boolean noReset, Boolean fullReset, String appActivity, String appPackage, String appWaitActivity, String appWaitPackage, Integer deviceReadyTimeout, String androidCoverage, Boolean enablePerformanceLogging, Integer androidDeviceReadyTimeout, Integer adbPort, String androidDeviceSocket, String avd, Long avdLaunchTimeout, Long avdReadyTimeout, String avdArgs, Boolean useKeystore, String keystorePath, String keystorePassword, String keyAlias, String keyPassword, String chromedriverExecutable, Long autoWebviewTimeout, String intentAction, String intentCategory, String intentFlags, String optionalIntentArguments, Boolean dontStopAppOnReset, Boolean unicodeKeyboard, Boolean resetKeyboard, Boolean noSign, Boolean ignoreUnimportantViews, Boolean disableAndroidWatchers, String chromeOptions, Boolean recreateChromeDriverSessions, Boolean nativeWebScreenshot) {
         super(automationName, platformName, platformVersion, deviceName, app, browserName, newCommandTimeout, language, locale, udid, orientation, autoWebview, noReset, fullReset);
         if (appActivity != null) {
             this.appActivity = appActivity;

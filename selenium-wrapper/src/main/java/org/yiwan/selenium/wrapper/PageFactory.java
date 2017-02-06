@@ -9,7 +9,7 @@ public class PageFactory {
         this.webDriverWrapper = webDriverWrapper;
     }
 
-    public <T extends AbstractWebPage> T create(Class<T> clazz) throws Exception {
+    public <T extends WebPage> T create(Class<T> clazz) throws Exception {
         Constructor<T> c = clazz.getDeclaredConstructor(IWebDriverWrapper.class);
         c.setAccessible(true);
         return c.newInstance(webDriverWrapper);

@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.bmproxy.ProxyWrapper;
 import org.yiwan.easy.test.ITestBase;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -64,9 +64,9 @@ public class HttpArchiveObserver extends SampleObserver {
                 return name.startsWith(filename);
             }
         };
-        File[] files = new File(PropHelper.HAR_FOLDER).listFiles(filter);
-        String filePath = PropHelper.HAR_FOLDER + filename + "_" + (files == null ? 0 : files.length) + ".har";
-        new File(PropHelper.HAR_FOLDER).mkdirs();
+        File[] files = new File(PropertiesHelper.HAR_FOLDER).listFiles(filter);
+        String filePath = PropertiesHelper.HAR_FOLDER + filename + "_" + (files == null ? 0 : files.length) + ".har";
+        new File(PropertiesHelper.HAR_FOLDER).mkdirs();
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             proxyWrapper.getProxy().getHar().writeTo(fileWriter);
         } catch (IOException e) {

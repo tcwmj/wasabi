@@ -24,8 +24,8 @@ import static java.lang.String.format;
 /**
  * @author Kenny Wang
  */
-public class PropHelper {
-    private final static Logger logger = LoggerFactory.getLogger(PropHelper.class);
+public class PropertiesHelper {
+    private final static Logger logger = LoggerFactory.getLogger(PropertiesHelper.class);
     private final static Properties props = new Properties();
     private static boolean hasLoaded = false;
 

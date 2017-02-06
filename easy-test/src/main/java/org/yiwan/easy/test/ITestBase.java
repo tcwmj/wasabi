@@ -16,57 +16,65 @@ public interface ITestBase {
 
     String getDownloadFile();
 
+    void setDownloadFile(String downloadFile);
+
     String getDefaultDownloadFileName();
+
+    void setDefaultDownloadFileName(String defaultDownloadFileName);
 
     String getTransactionName();
 
     String getSuiteName();
 
+    void setSuiteName(String suiteName);
+
     String getTestName();
+
+    void setTestName(String testName);
 
     String getScenarioId();
 
+    void setScenarioId(String scenarioId);
+
     String getFeatureId();
+
+    void setFeatureId(String featureId);
 
     String getSuiteTestSeparator();
 
     boolean isSkipTest();
 
+    void setSkipTest(boolean skipTest);
+
     boolean isPrepareToDownload();
+
+    void setPrepareToDownload(boolean prepareToDownload);
 
     Map<String, String> getTestMap();
 
     IDriverWrapper getDriverWrapper();
 
+    void setDriverWrapper(IDriverWrapper driverWrapper);
+
     ITestDataManager getTestDataManager();
 
+    void setTestDataManager(ITestDataManager testDataManager);
+
     IViewManager getViewManager();
+
+    void setViewManager(IViewManager viewManager);
 
     ProxyWrapper getProxyWrapper();
 
     TestCapabilities getTestCapabilities();
+
+    void setTestCapabilities(TestCapabilities testCapabilities);
 
     TestEnvironment getTestEnvironment();
 
     TimestampWriter getTimestampWriter();
 
     SoftAssertions getSoftAssertions();
-
-    void setDownloadFile(String downloadFile);
-
-    void setDefaultDownloadFileName(String defaultDownloadFileName);
-
-    void setScenarioId(String scenarioId);
-
-    void setFeatureId(String featureId);
-
-    void setSkipTest(boolean skipTest);
-
-    void setPrepareToDownload(boolean prepareToDownload);
-
-    void setTestDataManager(ITestDataManager testDataManager);
-
-    void setViewManager(IViewManager viewManager);
 
     /**
      * log the content into the report
@@ -124,11 +132,11 @@ public interface ITestBase {
 
     void createProxyWrapper();
 
-    void createWebDriverWrapper() throws MalformedURLException;
+    void createDriverWrapper() throws MalformedURLException;
 
     void setUpTest() throws Exception;
 
-    void setUpTest(boolean proxied) throws Exception;
+    void setUpTest(boolean isProxyEnabled) throws Exception;
 
     void tearDownTest() throws Exception;
 
@@ -139,6 +147,8 @@ public interface ITestBase {
     FileFormat getDownloadFileFormat();
 
     void setDownloadFileFormat(FileFormat downloadFileFormat);
+
+    void prepareToDownloadFile();
 
     void prepareToDownloadTextFile();
 

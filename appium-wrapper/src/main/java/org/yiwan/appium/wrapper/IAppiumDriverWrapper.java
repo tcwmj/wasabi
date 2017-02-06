@@ -12,6 +12,7 @@ import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.remote.ExecuteMethod;
 import org.yiwan.appium.locator.Locator;
+import org.yiwan.easy.test.IDriverWrapper;
 
 import java.net.URL;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Kenny Wang on 4/4/2016.
  */
-public interface IAppiumDriverWrapper {
+public interface IAppiumDriverWrapper extends IDriverWrapper {
     IBrowseNavigation navigate();
 
     WebDriver.Options manage();

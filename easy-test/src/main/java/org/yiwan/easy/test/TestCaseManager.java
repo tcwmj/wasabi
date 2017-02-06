@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.model.TestEnvironment;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TestCaseManager {
     private static final Logger logger = LoggerFactory.getLogger(TestCaseManager.class);
-    private static final Set<TestEnvironment> TEST_ENVIRONMENTS = getTestEnvironments(PropHelper.SERVER_INFO);
+    private static final Set<TestEnvironment> TEST_ENVIRONMENTS = getTestEnvironments(PropertiesHelper.SERVER_INFO);
     private static final BlockingQueue<TestEnvironment> TEST_ENVIRONMENT_BLOCKING_QUEUE = getTestEnvironmentBlockingQueue();
     private static ThreadLocal<AbstractTest> testCase = new ThreadLocal<>();
 
@@ -59,7 +59,7 @@ public class TestCaseManager {
 
     public static TestEnvironment pollTestEnvironment() throws InterruptedException {
         logger.info("{} test environments is available before polling", TEST_ENVIRONMENT_BLOCKING_QUEUE.size());
-        TestEnvironment testEnvironment = TEST_ENVIRONMENT_BLOCKING_QUEUE.poll(PropHelper.TIMEOUT_POLLING_ENVIRONMENT, TimeUnit.MILLISECONDS);
+        TestEnvironment testEnvironment = TEST_ENVIRONMENT_BLOCKING_QUEUE.poll(PropertiesHelper.TIMEOUT_POLLING_ENVIRONMENT, TimeUnit.MILLISECONDS);
         logger.info(String.format("polled test environment\n%s", testEnvironment));
         return testEnvironment;
     }
@@ -70,7 +70,7 @@ public class TestCaseManager {
     }
 
     public static void offerTestEnvironment(TestEnvironment testEnvironment) throws InterruptedException {
-        TEST_ENVIRONMENT_BLOCKING_QUEUE.offer(testEnvironment, PropHelper.TIMEOUT_OFFERING_ENVIRONMENT, TimeUnit.MILLISECONDS);
+        TEST_ENVIRONMENT_BLOCKING_QUEUE.offer(testEnvironment, PropertiesHelper.TIMEOUT_OFFERING_ENVIRONMENT, TimeUnit.MILLISECONDS);
         logger.info("{} test environments is available after offering", TEST_ENVIRONMENT_BLOCKING_QUEUE.size());
     }
 }

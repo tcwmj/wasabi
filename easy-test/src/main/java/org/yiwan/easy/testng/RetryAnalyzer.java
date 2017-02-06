@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,7 +16,7 @@ public class RetryAnalyzer implements IRetryAnalyzer {
     private final static Logger logger = LoggerFactory
             .getLogger(RetryAnalyzer.class);
 
-    private static final int MAX_RETRY_COUNT = PropHelper.TEST_RETRY_COUNT;
+    private static final int MAX_RETRY_COUNT = PropertiesHelper.TEST_RETRY_COUNT;
     private int retryCount = 0;
 
     @Override

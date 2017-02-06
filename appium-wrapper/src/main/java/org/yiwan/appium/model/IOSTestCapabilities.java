@@ -6,7 +6,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public class IOSCapabilities extends AppiumCapabilities {
+public class IOSTestCapabilities extends AppiumTestCapabilities {
     private String calendarFormat;
     private String bundleId;
     private Long launchTimeout;
@@ -31,11 +31,11 @@ public class IOSCapabilities extends AppiumCapabilities {
     private Integer webviewConnectRetries;
     private String appName;
 
-    public IOSCapabilities() {
+    public IOSTestCapabilities() {
         super();
     }
 
-    public IOSCapabilities(String automationName, String platformName, String platformVersion, String deviceName, String app, String browserName, Integer newCommandTimeout, String language, String locale, String udid, String orientation, Boolean autoWebview, Boolean noReset, Boolean fullReset, String calendarFormat, String bundleId, Long launchTimeout, Boolean locationServicesEnabled, Boolean locationServicesAuthorized, Boolean autoAcceptAlerts, Boolean autoDismissAlerts, Boolean nativeInstrumentsLib, Boolean nativeWebTap, String safariInitialUrl, Boolean safariAllowPopups, Boolean safariIgnoreFraudWarning, Boolean safariOpenLinksInBackground, Boolean keepKeyChains, String localizableStringsDir, String processArguments, Long interKeyDelay, String showIOSLog, String sendKeyStrategy, String screenshotWaitTimeout, String waitForAppScript, Integer webviewConnectRetries, String appName) {
+    public IOSTestCapabilities(String automationName, String platformName, String platformVersion, String deviceName, String app, String browserName, Integer newCommandTimeout, String language, String locale, String udid, String orientation, Boolean autoWebview, Boolean noReset, Boolean fullReset, String calendarFormat, String bundleId, Long launchTimeout, Boolean locationServicesEnabled, Boolean locationServicesAuthorized, Boolean autoAcceptAlerts, Boolean autoDismissAlerts, Boolean nativeInstrumentsLib, Boolean nativeWebTap, String safariInitialUrl, Boolean safariAllowPopups, Boolean safariIgnoreFraudWarning, Boolean safariOpenLinksInBackground, Boolean keepKeyChains, String localizableStringsDir, String processArguments, Long interKeyDelay, String showIOSLog, String sendKeyStrategy, String screenshotWaitTimeout, String waitForAppScript, Integer webviewConnectRetries, String appName) {
         super(automationName, platformName, platformVersion, deviceName, app, browserName, newCommandTimeout, language, locale, udid, orientation, autoWebview, noReset, fullReset);
         if (calendarFormat != null) {
             this.calendarFormat = calendarFormat;

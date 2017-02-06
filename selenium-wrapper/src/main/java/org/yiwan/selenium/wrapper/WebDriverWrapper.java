@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.locator.Locator;
 import org.yiwan.easy.test.TestCaseManager;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ public class WebDriverWrapper implements IWebDriverWrapper {
     public WebDriverWrapper(WebDriver driver) {
         this.driver = driver;
         this.js = (JavascriptExecutor) driver;
-        this.wait = new WebDriverWait(driver, PropHelper.TIMEOUT_INTERVAL, PropHelper.TIMEOUT_POLLING_INTERVAL)
+        this.wait = new WebDriverWait(driver, PropertiesHelper.TIMEOUT_INTERVAL, PropertiesHelper.TIMEOUT_POLLING_INTERVAL)
                 .ignoring(StaleElementReferenceException.class)
                 .ignoring(NoSuchElementException.class)
                 .ignoring(UnreachableBrowserException.class)
@@ -153,7 +153,7 @@ public class WebDriverWrapper implements IWebDriverWrapper {
     @Override
     public <X> X getScreenshotAs(OutputType<X> target) {
         TakesScreenshot takesScreenshot;
-//        if (PropHelper.REMOTE) {
+//        if (PropertiesHelper.REMOTE) {
 //            // RemoteWebDriver does not implement the TakesScreenshot class if
 //            // the driver does have the Capabilities to take a screenshot then
 //            // Augmenter will add the TakesScreenshot methods to the instance

@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import org.yiwan.appium.wrapper.AppiumDriverWrapperFactory;
 import org.yiwan.appium.wrapper.IAppiumDriverWrapper;
-import org.yiwan.appium.model.AndroidCapabilities;
+import org.yiwan.appium.model.AndroidTestCapabilities;
 
 public class AppiumWrapperDemo {
     private final static Logger logger = LoggerFactory.getLogger(AppiumWrapperDemo.class);
 
     @Test
     public void DemoTest() throws Exception {
-        IAppiumDriverWrapper driver = new AppiumDriverWrapperFactory(new AndroidCapabilities()).create();
+        IAppiumDriverWrapper driver = new AppiumDriverWrapperFactory(new AndroidTestCapabilities()).create();
 
         try {
             driver.waitThat().timeout(2000);

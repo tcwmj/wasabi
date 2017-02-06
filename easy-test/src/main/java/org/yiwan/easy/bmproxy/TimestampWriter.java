@@ -12,7 +12,7 @@ import org.yiwan.easy.bmproxy.model.HttpResponseDetail;
 import org.yiwan.easy.bmproxy.model.UserTransactionDetail;
 import org.yiwan.easy.model.*;
 import org.yiwan.easy.test.ITestBase;
-import org.yiwan.easy.util.PropHelper;
+import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public class TimestampWriter {
     private static final Logger logger = LoggerFactory.getLogger(TimestampWriter.class);
-    private static final File TRANSACTION_TIMESTAMPS_FILE = new File(PropHelper.TRANSACTION_TIMESTAMPS_FILE);
+    private static final File TRANSACTION_TIMESTAMPS_FILE = new File(PropertiesHelper.TRANSACTION_TIMESTAMPS_FILE);
 
     public void write(String sql) {
         try {
@@ -33,8 +33,8 @@ public class TimestampWriter {
     }
 
     public void write(TestCapabilities testCapabilities) {
-        String sql = String.format("insert ignore into DIM_CLIENT_ENV (client_os,client_os_version,client_browser_type,client_browser_version,client_resolution) values ('%s','%s','%s','%s','%s');%n", testCapabilities.getOs(), testCapabilities.getOsVersion(), testCapabilities.getBrowser(), testCapabilities.getBrowserVersion(), testCapabilities.getResolution());
-        write(sql);
+//        String sql = String.format("insert ignore into DIM_CLIENT_ENV (client_os,client_os_version,client_browser_type,client_browser_version,client_resolution) values ('%s','%s','%s','%s','%s');%n", testCapabilities.getOs(), testCapabilities.getOsVersion(), testCapabilities.getBrowser(), testCapabilities.getBrowserVersion(), testCapabilities.getResolution());
+//        write(sql);
     }
 
     public void write(TestEnvironment testEnvironment) {

@@ -9,7 +9,7 @@ public class ViewFactory {
         this.appiumDriverWrapper = appiumDriverWrapper;
     }
 
-    public <T extends AbstractAppView> T create(Class<T> clazz) throws Exception {
+    public <T extends AppView> T create(Class<T> clazz) throws Exception {
         Constructor<T> c = clazz.getDeclaredConstructor(IAppiumDriverWrapper.class);
         c.setAccessible(true);
         return c.newInstance(appiumDriverWrapper);
