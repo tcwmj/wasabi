@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.yiwan.appium.locator.Locator;
 import org.yiwan.easy.util.PropertiesHelper;
 
-import javax.annotation.Nullable;
 import java.net.URL;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -1788,9 +1787,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private String currentValue = null;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getInnerText();
                             return !currentValue.equals(text);
                         }
@@ -1807,9 +1805,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private String currentValue = null;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getInnerText();
                             return currentValue.contains(text);
                         }
@@ -1826,9 +1823,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private String currentValue = null;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getInnerText();
                             return !currentValue.contains(text);
                         }
@@ -1845,9 +1841,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private String currentValue = null;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getInnerText();
                             return currentValue.startsWith(text);
                         }
@@ -1864,9 +1859,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private String currentValue = null;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getInnerText();
                             return currentValue.endsWith(text);
                         }
@@ -2317,9 +2311,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private int currentValue = 0;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getNumberOfMatches();
                             return currentValue == number;
                         }
@@ -2336,9 +2329,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private int currentValue = 0;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getNumberOfMatches();
                             return currentValue != number;
                         }
@@ -2355,9 +2347,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private int currentValue = 0;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getNumberOfMatches();
                             return currentValue < number;
                         }
@@ -2374,9 +2365,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private int currentValue = 0;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getNumberOfMatches();
                             return currentValue > number;
                         }
@@ -2393,9 +2383,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private int currentValue = 0;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getNumberOfMatches();
                             return currentValue <= number;
                         }
@@ -2412,9 +2401,8 @@ public class AppiumDriverWrapper implements IAppiumDriverWrapper {
                     return wait.until(new ExpectedCondition<Boolean>() {
                         private int currentValue = 0;
 
-                        @Nullable
                         @Override
-                        public Boolean apply(@Nullable WebDriver input) {
+                        public Boolean apply(WebDriver input) {
                             currentValue = element(locator).getNumberOfMatches();
                             return currentValue >= number;
                         }

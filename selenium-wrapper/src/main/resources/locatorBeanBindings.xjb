@@ -10,30 +10,30 @@
 			underscoreBinding="asCharInWord" /> -->
 		<jxb:bindings node="//xs:element[@name='locatorBean']/xs:complexType">
 			<ci:code>
-	public View view(String id) throws Exception {
-		return (View) org.yiwan.appium.util.Helper.filterListById(this.getView(), id);
+	public Page page(String id) throws Exception {
+		return (Page) org.yiwan.easy.util.Helper.filterListById(this.getPage(), id);
 	}
 
 	public Locator locator(String id, String... replacements) throws Exception {
 		int index = id.indexOf(".");
-		String viewid = id.substring(0, index);
-		return view(viewid).locator(id, replacements);
+		String pageid = id.substring(0, index);
+		return page(pageid).locator(id, replacements);
 	}
 			</ci:code>
 		</jxb:bindings>
-		<jxb:bindings node="//xs:complexType[@name='view']">
+		<jxb:bindings node="//xs:complexType[@name='page']">
 			<ci:code>
 	public Locator locator(String id, String... replacements) throws Exception {
-		Locator locator = (Locator) org.yiwan.webcore.util.Helper.filterListById(this.getLocator(), id);
+		Locator locator = (Locator) org.yiwan.easy.util.Helper.filterListById(this.getLocator(), id);
 		if (locator != null) {
 			if (locator.getRef() != null)
 				locator = (Locator) locator.getRef();
-			if (locator.getView() == null)
-				locator.setView(this);
+			if (locator.getPage() == null)
+				locator.setPage(this);
 			String expression = locator.getExpression();
 			String expression_temp = "";
 			for (int i = 0; i &lt; replacements.length; i++) {
-				int index = expression.indexOf(org.yiwan.webcore.util.PropHelper.REPLACEMENT_SYMBOL);
+				int index = expression.indexOf(org.yiwan.easy.util.PropertiesHelper.REPLACEMENT_SYMBOL);
 				expression_temp += expression.substring(0, index) + replacements[i];
 				expression = expression.substring(index + 1);
 			}
@@ -45,7 +45,7 @@
 
 	@Override
 	public String toString() {
-		return String.format("%s (%s) view", name, id);
+		return String.format("%s (%s) page", name, id);
 	}
 			</ci:code>
 		</jxb:bindings>
@@ -71,29 +71,23 @@
 			return org.openqa.selenium.By.partialLinkText(expression_);
 		case JAVASCRIPT:
 			return null;
-		case ACCESSIBILITY_ID:
-			return io.appium.java_client.MobileBy.AccessibilityId(expression_);
-		case ANDROID_UI_AUTOMATOR:
-			return io.appium.java_client.MobileBy.AndroidUIAutomator(expression_);
-		case IOS_UI_AUTOMATION:
-			return io.appium.java_client.MobileBy.IosUIAutomation(expression_);
 		}
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s (%s) %s by %s (%s) @ %s", name, id, type.value(), by.value(), expression_, view);
+		return String.format("%s (%s) %s by %s (%s) @ %s", name, id, type.value(), by.value(), expression_, page);
 	}
 	
-	private View view;
+	private Page page;
 
-	public View getView() {
-		return view;
+	public Page getPage() {
+		return page;
 	}
 
-	public void setView(View view) {
-		this.view = view;
+	public void setPage(Page page) {
+		this.page = page;
 	}
 
 	private String expression_;

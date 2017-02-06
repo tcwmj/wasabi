@@ -7,7 +7,7 @@ import org.assertj.core.api.AbstractListAssert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.remote.SessionId;
-import org.yiwan.easy.locator.Locator;
+import org.yiwan.selenium.locator.Locator;
 
 import java.util.ArrayList;
 import java.util.HashSet;

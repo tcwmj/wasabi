@@ -8,7 +8,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.remote.SessionId;
 import org.yiwan.easy.test.IDriverWrapper;
-import org.yiwan.easy.locator.Locator;
+import org.yiwan.selenium.locator.Locator;
 
 import java.util.List;
 import java.util.Set;

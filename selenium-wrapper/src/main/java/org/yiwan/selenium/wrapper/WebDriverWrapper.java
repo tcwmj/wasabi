@@ -12,9 +12,9 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 import org.openqa.selenium.support.ui.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yiwan.easy.locator.Locator;
 import org.yiwan.easy.test.TestCaseManager;
 import org.yiwan.easy.util.PropertiesHelper;
+import org.yiwan.selenium.locator.Locator;
 
 import java.util.ArrayList;
 import java.util.Arrays;

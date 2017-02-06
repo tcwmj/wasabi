@@ -3,11 +3,11 @@
 	<xs:element name="locatorBean">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="view" type="view" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="page" type="page" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:complexType name="view">
+	<xs:complexType name="page">
 		<xs:sequence>
 			<xs:element name="locator" type="locator" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
@@ -54,9 +54,6 @@
 			<xs:enumeration value="linkText"/>
 			<xs:enumeration value="partialLinkText"/>
 			<xs:enumeration value="javascript"/>
-			<xs:enumeration value="accessibilityId"/>
-			<xs:enumeration value="androidUIAutomator"/>
-			<xs:enumeration value="iosUIAutomation"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

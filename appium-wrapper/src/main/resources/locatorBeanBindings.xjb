@@ -11,7 +11,7 @@
 		<jxb:bindings node="//xs:element[@name='locatorBean']/xs:complexType">
 			<ci:code>
 	public View view(String id) throws Exception {
-		return (View) org.yiwan.appium.util.Helper.filterListById(this.getView(), id);
+		return (View) org.yiwan.easy.util.Helper.filterListById(this.getView(), id);
 	}
 
 	public Locator locator(String id, String... replacements) throws Exception {
@@ -24,7 +24,7 @@
 		<jxb:bindings node="//xs:complexType[@name='view']">
 			<ci:code>
 	public Locator locator(String id, String... replacements) throws Exception {
-		Locator locator = (Locator) org.yiwan.webcore.util.Helper.filterListById(this.getLocator(), id);
+		Locator locator = (Locator) org.yiwan.easy.util.Helper.filterListById(this.getLocator(), id);
 		if (locator != null) {
 			if (locator.getRef() != null)
 				locator = (Locator) locator.getRef();
@@ -33,7 +33,7 @@
 			String expression = locator.getExpression();
 			String expression_temp = "";
 			for (int i = 0; i &lt; replacements.length; i++) {
-				int index = expression.indexOf(org.yiwan.webcore.util.PropHelper.REPLACEMENT_SYMBOL);
+				int index = expression.indexOf(org.yiwan.easy.util.PropertiesHelper.REPLACEMENT_SYMBOL);
 				expression_temp += expression.substring(0, index) + replacements[i];
 				expression = expression.substring(index + 1);
 			}
