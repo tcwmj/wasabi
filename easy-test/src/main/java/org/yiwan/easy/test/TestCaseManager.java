@@ -21,7 +21,7 @@ public class TestCaseManager {
     private static final Logger logger = LoggerFactory.getLogger(TestCaseManager.class);
     private static final Set<TestEnvironment> TEST_ENVIRONMENTS = getTestEnvironments(PropertiesHelper.SERVER_INFO);
     private static final BlockingQueue<TestEnvironment> TEST_ENVIRONMENT_BLOCKING_QUEUE = getTestEnvironmentBlockingQueue();
-    private static ThreadLocal<AbstractTest> testCase = new ThreadLocal<>();
+    private static ThreadLocal<AbstractTestCase> testCase = new ThreadLocal<>();
 
     private static Set<TestEnvironment> getTestEnvironments(String json) {
         try {
@@ -38,11 +38,11 @@ public class TestCaseManager {
         return new LinkedBlockingDeque<>(TEST_ENVIRONMENTS);
     }
 
-    public static ITestBase getTestCase() {
+    public static ITestCase getTestCase() {
         return testCase.get();
     }
 
-    public static void setTestCase(AbstractTest testCase) {
+    public static void setTestCase(AbstractTestCase testCase) {
         TestCaseManager.testCase.set(testCase);
     }
 

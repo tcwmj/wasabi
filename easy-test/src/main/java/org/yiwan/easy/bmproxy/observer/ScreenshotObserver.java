@@ -2,7 +2,7 @@ package org.yiwan.easy.bmproxy.observer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yiwan.easy.test.ITestBase;
+import org.yiwan.easy.test.ITestCase;
 
 import java.io.IOException;
 
@@ -11,9 +11,9 @@ import java.io.IOException;
  */
 public class ScreenshotObserver extends SampleObserver {
     private static final Logger logger = LoggerFactory.getLogger(ScreenshotObserver.class);
-    private ITestBase testCase;
+    private ITestCase testCase;
 
-    public ScreenshotObserver(ITestBase testCase) {
+    public ScreenshotObserver(ITestCase testCase) {
         this.testCase = testCase;
     }
 

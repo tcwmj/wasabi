@@ -13,19 +13,19 @@ import org.yiwan.easy.bmproxy.TimestampWriter;
 import org.yiwan.easy.bmproxy.model.HttpRequestDetail;
 import org.yiwan.easy.bmproxy.model.HttpResponseDetail;
 import org.yiwan.easy.bmproxy.model.UserTransactionDetail;
-import org.yiwan.easy.test.ITestBase;
+import org.yiwan.easy.test.ITestCase;
 
 /**
  * Created by Kenny Wang on 3/14/2016.
  */
 public class TimestampObserver extends SampleObserver {
     private static final Logger logger = LoggerFactory.getLogger(TimestampObserver.class);
-    private ITestBase testcase;
+    private ITestCase testcase;
     private ProxyWrapper proxyWrapper;
     private UserTransactionDetail userTransactionDetail;
     private TimestampWriter timestampWriter;
 
-    public TimestampObserver(ITestBase testCase) {
+    public TimestampObserver(ITestCase testCase) {
         this.testcase = testCase;
         this.proxyWrapper = testCase.getProxyWrapper();
         this.timestampWriter = testCase.getTimestampWriter();

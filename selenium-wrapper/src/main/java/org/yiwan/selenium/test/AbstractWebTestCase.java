@@ -5,12 +5,11 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Proxy;
 import org.testng.ITestContext;
-import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
-import org.yiwan.easy.test.AbstractTest;
+import org.yiwan.easy.test.AbstractTestCase;
 import org.yiwan.easy.test.TestCaseManager;
 import org.yiwan.easy.util.Helper;
 import org.yiwan.easy.util.PropertiesHelper;
@@ -25,7 +24,7 @@ import java.net.MalformedURLException;
 /**
  * Created by Kenny Wang on 3/14/2016.
  */
-public abstract class AbstractWebTest extends AbstractTest {
+public abstract class AbstractWebTestCase extends AbstractTestCase {
     @Override
     public void embedScreenshot() throws IOException {
 //        if (webDriverWrapper.alert().isPresent()) {
@@ -113,7 +112,7 @@ public abstract class AbstractWebTest extends AbstractTest {
     }
 
     @AfterClass
-    protected void afterClass(ITestContext testContext, ITestResult testResult) {
+    protected void afterClass() {
 //        do something
     }
 }

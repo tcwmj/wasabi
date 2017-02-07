@@ -4,7 +4,7 @@ import net.lightbody.bmp.proxy.CaptureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.bmproxy.ProxyWrapper;
-import org.yiwan.easy.test.ITestBase;
+import org.yiwan.easy.test.ITestCase;
 import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.File;
@@ -18,9 +18,9 @@ import java.io.IOException;
 public class HttpArchiveObserver extends SampleObserver {
     private static final Logger logger = LoggerFactory.getLogger(HttpArchiveObserver.class);
     private ProxyWrapper proxyWrapper;
-    private ITestBase testCase;
+    private ITestCase testCase;
 
-    public HttpArchiveObserver(ITestBase testCase) {
+    public HttpArchiveObserver(ITestCase testCase) {
         this.testCase = testCase;
         this.proxyWrapper = testCase.getProxyWrapper();
         proxyWrapper.setHarCaptureTypes(CaptureType.getRequestCaptureTypes());

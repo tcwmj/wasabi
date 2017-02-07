@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Kenny Wang on 3/14/2016.
  */
-public abstract class AbstractTest implements ITestBase {
+public abstract class AbstractTestCase implements ITestCase {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private String downloadFile;//last download file name by relative path

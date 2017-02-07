@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yiwan.easy.bmproxy.ProxyWrapper;
 import org.yiwan.easy.test.FileFormat;
-import org.yiwan.easy.test.ITestBase;
+import org.yiwan.easy.test.ITestCase;
 import org.yiwan.easy.util.Helper;
 import org.yiwan.easy.util.PropertiesHelper;
 
@@ -25,9 +25,9 @@ import java.nio.charset.UnsupportedCharsetException;
 public class FileDownloadObserver extends SampleObserver {
     private final static Logger logger = LoggerFactory.getLogger(FileDownloadObserver.class);
     private ProxyWrapper proxyWrapper;
-    private ITestBase testCase;
+    private ITestCase testCase;
 
-    public FileDownloadObserver(ITestBase testCase) {
+    public FileDownloadObserver(ITestCase testCase) {
         this.testCase = testCase;
         this.proxyWrapper = testCase.getProxyWrapper();
         supportDownloadFile(testCase);
@@ -49,7 +49,7 @@ public class FileDownloadObserver extends SampleObserver {
     /**
      * support download file mechanism through the proxy
      */
-    private void supportDownloadFile(final ITestBase testCase) {
+    private void supportDownloadFile(final ITestCase testCase) {
         logger.info("setup proxy to support file download mechanism");
         // set response filter rule for downloading files
         proxyWrapper.addFirstHttpFilterFactory(new ResponseFilterAdapter.FilterSource(new ResponseFilter() {

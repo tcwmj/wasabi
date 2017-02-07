@@ -16,7 +16,7 @@ import org.yiwan.appium.model.IOSTestCapabilities;
 import org.yiwan.appium.wrapper.AppiumDriverWrapper;
 import org.yiwan.appium.wrapper.AppiumDriverWrapperFactory;
 import org.yiwan.appium.wrapper.IAppiumDriverWrapper;
-import org.yiwan.easy.test.AbstractTest;
+import org.yiwan.easy.test.AbstractTestCase;
 import org.yiwan.easy.test.TestCaseManager;
 import org.yiwan.easy.util.Helper;
 import org.yiwan.easy.util.PropertiesHelper;
@@ -28,7 +28,7 @@ import java.net.MalformedURLException;
 /**
  * Created by Kenny Wang on 3/14/2016.
  */
-public abstract class AbstractAppTest extends AbstractTest {
+public abstract class AbstractAppTestCase extends AbstractTestCase {
     @Override
     public void embedScreenshot() throws IOException {
         String saveTo = Helper.randomize() + ".png";

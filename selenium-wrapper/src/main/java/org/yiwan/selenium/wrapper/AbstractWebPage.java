@@ -3,24 +3,24 @@ package org.yiwan.selenium.wrapper;
 import org.assertj.core.api.SoftAssertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yiwan.selenium.locator.Locator;
-import org.yiwan.selenium.locator.LocatorBean;
 import org.yiwan.easy.test.IView;
 import org.yiwan.easy.test.TestCaseManager;
 import org.yiwan.easy.util.JaxbHelper;
 import org.yiwan.easy.util.PropertiesHelper;
+import org.yiwan.selenium.locator.Locator;
+import org.yiwan.selenium.locator.LocatorBean;
 
 import java.util.Set;
 
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public class WebPage implements IView {
+public abstract class AbstractWebPage implements IView {
     private final static LocatorBean LOCATOR_BEAN = JaxbHelper.unmarshal(ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATORS_FILE), ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATOR_SCHEMA), LocatorBean.class);
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private IWebDriverWrapper webDriverWrapper;
 
-    public WebPage(IWebDriverWrapper webDriverWrapper) {
+    public AbstractWebPage(IWebDriverWrapper webDriverWrapper) {
         this.webDriverWrapper = webDriverWrapper;
     }
 

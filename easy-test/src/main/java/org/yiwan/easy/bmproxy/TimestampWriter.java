@@ -11,7 +11,7 @@ import org.yiwan.easy.bmproxy.model.HttpRequestDetail;
 import org.yiwan.easy.bmproxy.model.HttpResponseDetail;
 import org.yiwan.easy.bmproxy.model.UserTransactionDetail;
 import org.yiwan.easy.model.*;
-import org.yiwan.easy.test.ITestBase;
+import org.yiwan.easy.test.ITestCase;
 import org.yiwan.easy.util.PropertiesHelper;
 
 import java.io.File;
@@ -91,7 +91,7 @@ public class TimestampWriter {
         write(sql);
     }
 
-    public void write(ITestBase testcase) {
+    public void write(ITestCase testcase) {
         write(testcase.getTestCapabilities());
         write(testcase.getTestEnvironment());
         write(testcase.getSuiteName(), testcase.getTestName(), testcase.getFeatureId(), testcase.getScenarioId());

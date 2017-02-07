@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-public interface ITestBase {
+public interface ITestCase {
 
     String getDownloadFile();
 

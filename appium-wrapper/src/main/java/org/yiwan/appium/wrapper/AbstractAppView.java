@@ -14,12 +14,12 @@ import org.yiwan.easy.util.PropertiesHelper;
 /**
  * Created by Kenny Wang on 4/2/2016.
  */
-public abstract class AppView implements IView {
+public abstract class AbstractAppView implements IView {
     private final static LocatorBean LOCATOR_BEAN = JaxbHelper.unmarshal(ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATORS_FILE), ClassLoader.getSystemResourceAsStream(PropertiesHelper.LOCATOR_SCHEMA), LocatorBean.class);
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private IAppiumDriverWrapper appiumDriverWrapper;
 
-    public AppView(IAppiumDriverWrapper appiumDriverWrapper) {
+    public AbstractAppView(IAppiumDriverWrapper appiumDriverWrapper) {
         this.appiumDriverWrapper = appiumDriverWrapper;
     }
 
