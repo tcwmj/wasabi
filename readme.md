@@ -8,3 +8,6 @@ please refer to [How to Setup Automation Test Environment (Selenium)](https://se
 
 **Guideline**
 ===
+Selenium version  2.53.1
+
+Appium version 4.1.2

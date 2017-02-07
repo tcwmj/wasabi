@@ -117,11 +117,11 @@ public class PropertiesHelper {
     }
 
     private static boolean load() {
-        load(System.getProperty("base.prop", "base.properties"));
-        load(System.getProperty("wrapper.prop", "wrapper.properties"));
-        load(System.getProperty("wrapper.prop", "wrapper.properties"));
-        load(System.getProperty("biz.prop", "biz.properties"));
-        load(System.getProperty("test.prop", "test.properties"));
+        load(System.getProperty("base.properties", "base.properties"));
+        load(System.getProperty("web.properties", "web.properties"));
+        load(System.getProperty("app.properties", "app.properties"));
+        load(System.getProperty("biz.properties", "biz.properties"));
+        load(System.getProperty("test.properties", "test.properties"));
         return true;
     }
 
